@@ -1,34 +1,68 @@
-// i've read about the "load/preload function" but i didn't know where to set it and how to do that because i've tried so many things that didn't work to display the "character-down.png" image.
-const playerDown = new Player(0, 0, "/assets/character-down.png");
-let col = 0;
-let row = 0;
-let playerX = SQUARE_SIDE;
-let playerY = SQUARE_SIDE;
-
 // Are the two Parameters right or it should include width and height?
 class Player {
   constructor(col, row) {
-    this.col = col;
-    this.row = row;
-    this.width = playerX;
-    this.height = playerY;
+    this.col = 0; //x
+    this.row = 0; //y
+    this.width = SQUARE_SIDE;
+    this.height = SQUARE_SIDE;
+    this.rightBoundary = WIDTH - this.width;
+    this.bottomBoundary = HEIGHT - this.height;
   }
 
-  drawImage(image) {
-    image(playerDown, this.col, this.row, this.width, this.height);
+  draw() {
+    this.move();
+    this.maintainBoundaries(); //revisar
+    image(playerImage, this.col, this.row, this.width, this.height);
+    // console.log(this.col, this.row);
   }
-  moveUp() {
-    this.row--;
+
+  maintainBoundaries() {
+    //Until the rightside
+    if (this.col >= this.rightBoundary) {
+      this.col = this.rightBoundary;
+    }
+    //Until the bottom
+    if (this.row >= this.bottomBoundary) {
+      this.row = this.bottomBoundary;
+    }
+    //Until the leftside
+    if (this.col <= 0) {
+      this.col = 0;
+    }
+    //Until the topside
+    if (this.row <= 0) {
+      this.row = 0;
+    }
   }
-  moveDown() {
-    this.row++;
+
+  move() {
+    if (keyIsDown(DOWN_ARROW)) {
+      this.row += SQUARE_SIDE;
+    }
+    if (keyIsDown(UP_ARROW)) {
+      this.row -= SQUARE_SIDE;
+    }
+    if (keyIsDown(LEFT_ARROW)) {
+      this.col -= SQUARE_SIDE;
+    }
+    if (keyIsDown(RIGHT_ARROW)) {
+      this.col += SQUARE_SIDE;
+    }
   }
-  moveLeft() {
-    this.col--;
-  }
-  moveRight() {
-    this.col++;
-  }
+  // get bottomSide() {
+  //   return this.row + this.height;
+  // }
+
+  // get topSide() {
+  //   return this.row;
+  // }
+
+  // get leftSide() {
+  //   return this.col;
+  // }
+  // get rightSide() {
+  //   return (this.col = this.rightBoundary);
+  // }
 }
 
 // const player = new Player(0, 0, {
